@@ -1,32 +1,32 @@
+from typing import List
 import pandas as pd
 import numpy as np
-from typing import List
 
 
-def remove_colums(df: pd.DataFrame, columns_to_remove: List[str]) -> pd.DataFrame:
+def get_list_with_removed_colums(df: pd.DataFrame, columns_to_remove: List[str]) -> List[str]:
     """
-    Remove specified columns from a DataFrame.
+    Remove specified columns from a DataFrame column list.
 
     Args:
         df (pd.DataFrame): The input DataFrame.
         columns_to_remove (List[str]): List of column names to remove.
-    
+
     Returns:
-        pd.DataFrame: DataFrame with specified columns removed.
+        List[str]: List of column names with remvoved specified columns
     """
     columns_list = list(df.columns)
     for column in columns_to_remove:
-        columns_to_iterate_through.remove(column)
+        columns_list.remove(column)
     return columns_list
 
 
 def get_prime_columns(df: pd.DataFrame) -> List[str]:
     """
     Get the list of column names containing 'prime' in a DataFrame.
-    
+
     Args:
         df (pd.DataFrame): The input DataFrame.
-    
+
     Returns:
         List[str]: List of column names containing 'prime'.
     """
@@ -39,12 +39,12 @@ def adding_prime_columns(
 ) -> pd.DataFrame:
     """
     Add prime columns to a DataFrame based on specific conditions.
-    
+
     Args:
         df (pd.DataFrame): The input DataFrame.
         mo_column (str): Name of the column representing 'MO'.
         list_of_columns (List[str]): List of column names to add prime columns.
-    
+
     Returns:
         pd.DataFrame: DataFrame with prime columns added.
     """
@@ -54,17 +54,17 @@ def adding_prime_columns(
             df[column] > 1.2 * df[mo_column], df[column] < 0.8 * df[mo_column]
         )
         df[new_column_name] = np.where(condition, np.nan, df[column])
-        return df
+    return df
 
 
 def adding_pm_pr(df: pd.DataFrame, prime_columns: List[str]) -> pd.DataFrame:
     """
     Add 'PM' and 'PR' columns to a DataFrame based on prime column values.
-    
+
     Args:
         df (pd.DataFrame): The input DataFrame.
         prime_columns (List[str]): List of prime column names.
-    
+
     Returns:
         pd.DataFrame: DataFrame with 'PM' and 'PR' columns added.
     """

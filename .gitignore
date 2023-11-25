@@ -1,2 +1,3 @@
 *.ipynb
 *.xlsx
+utils/__pycache__/
