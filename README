@@ -1,0 +1,3 @@
+This is a personal webapp in which i put sheets and process them following a certain set of rules.
+The webapp is developed using streamlit, and sheet transformations are made by pandas.
+The process is relatively simple: the user uploads the sheet, waits a moment, and gets a processed sheet in return, available to download.
