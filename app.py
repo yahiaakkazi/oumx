@@ -11,10 +11,10 @@ from utils.transformations import (
 )
 
 df = pd.read_excel("input_test.xlsx")
-c = get_list_with_removed_colums(df, ["Articles", "MO"])
-df = adding_prime_columns(df, "MO", c)
-cc = get_prime_columns(df)
-df = adding_pm_pr(df, cc)
+price_columns = get_list_with_removed_colums(df, ["Articles", "MO"])
+df = adding_prime_columns(df, "MO", price_columns)
+prime_colums = get_prime_columns(df)
+df = adding_pm_pr(df, prime_colums)
 
 
 def main():
