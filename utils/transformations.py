@@ -3,7 +3,9 @@ import pandas as pd
 import numpy as np
 
 
-def get_list_with_removed_colums(df: pd.DataFrame, columns_to_remove: List[str]) -> List[str]:
+def get_list_with_removed_colums(
+    df: pd.DataFrame, columns_to_remove: List[str]
+) -> List[str]:
     """
     Remove specified columns from a DataFrame column list.
 
@@ -70,4 +72,22 @@ def adding_pm_pr(df: pd.DataFrame, prime_columns: List[str]) -> pd.DataFrame:
     """
     df["PM"] = df[prime_columns].mean(axis=1, skipna=True)
     df["PR"] = df[["MO", "PM"]].mean(axis=1, skipna=True)
+    return df
+
+
+def adding_distance_columns(df: pd.DataFrame, prime_columns: List[str]) -> pd.DataFrame:
+    """
+    Adds columns where, if prime is null, the new columns stays null, and if it's not, the distance between prime & PR gets computed there.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+        prime_columns (List[str]): List of prime column names.
+
+    Returns:
+        pd.DataFrame: DataFrame with 'Prime_distance' columns added.
+    """
+    for column in prime_columns:
+        new_column_name = f"{column}_distance_to_PR"
+        condition = np.isnan(df[column])
+        df[new_column_name] = np.where(condition, float("inf"), np.abs(df[column] - df["PR"]))
     return df
