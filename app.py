@@ -17,11 +17,6 @@ cc = get_prime_columns(df)
 df = adding_pm_pr(df, cc)
 
 
-# @st.cache_data
-# def convert_df_excel(df: pd.DataFrame):
-#     return df.to_excel("output.xlsx", sheet_name="Sheet", index=False)
-
-
 def main():
     """Function that runs upon doing a streamlit run"""
     st.set_page_config(layout="wide")
@@ -73,7 +68,7 @@ def main():
                     "Download as Excel",
                     data=contents,
                     file_name="output.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 )
 
             except Exception as e:
