@@ -10,12 +10,6 @@ from utils.transformations import (
     order_items,
 )
 
-df = pd.read_excel("input_test.xlsx")
-price_columns = get_list_with_removed_colums(df, ["Articles", "MO"])
-df = adding_prime_columns(df, "MO", price_columns)
-prime_colums = get_prime_columns(df)
-df = adding_pm_pr(df, prime_colums)
-
 
 def main():
     """Function that runs upon doing a streamlit run"""
