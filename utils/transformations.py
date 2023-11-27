@@ -89,5 +89,37 @@ def adding_distance_columns(df: pd.DataFrame, prime_columns: List[str]) -> pd.Da
     for column in prime_columns:
         new_column_name = f"{column}_distance_to_PR"
         condition = np.isnan(df[column])
-        df[new_column_name] = np.where(condition, float("inf"), np.abs(df[column] - df["PR"]))
+        df[new_column_name] = np.where(
+            condition, float("inf"), np.abs(df[column] - df["PR"])
+        )
     return df
+
+
+def format_column(column_name: str) -> str:
+    """
+    Removes a certain value from the column names.
+
+    Args:
+        column_name: the name of the column
+
+    Returns:
+        str : the formatted column name
+    """
+    processed_name = column_name.replace("_prime_distance_to_PR", "")
+    return processed_name
+
+
+def order_items(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Orders the items in an ascending order
+
+    Args:
+        df:pd.DataFrame: the dataframe to be ordered
+
+    Returns:
+        pd.DataFrame : the ordered dataframe
+    """
+    df_dict = df.to_dict()
+    for item in df_dict.keys():
+        df_dict[item] = sorted(df_dict[item].items(), key=lambda x: x[1])
+    return pd.DataFrame.from_dict(df_dict).astype(str)

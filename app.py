@@ -6,6 +6,8 @@ from utils.transformations import (
     get_prime_columns,
     adding_pm_pr,
     adding_distance_columns,
+    format_column,
+    order_items,
 )
 
 df = pd.read_excel("input_test.xlsx")
@@ -13,6 +15,11 @@ c = get_list_with_removed_colums(df, ["Articles", "MO"])
 df = adding_prime_columns(df, "MO", c)
 cc = get_prime_columns(df)
 df = adding_pm_pr(df, cc)
+
+
+# @st.cache_data
+# def convert_df_excel(df: pd.DataFrame):
+#     return df.to_excel("output.xlsx", sheet_name="Sheet", index=False)
 
 
 def main():
@@ -41,12 +48,29 @@ def main():
                 st.markdown("Adding PM & PR columns")
                 prime_columns = get_prime_columns(df)
                 df = adding_pm_pr(df, prime_columns)
-                st.dataframe(df[["Articles", "MO", "PM", "PR"]])
+                st.dataframe(df[["Articles", "MO", "PM", "PR"]], height=150)
                 st.markdown("Calculating distances...")
                 df = adding_distance_columns(df, prime_columns)
                 st.dataframe(
-                    df.drop(columns=prime_columns + prices_columns + ["PM", "MO"])
+                    df.drop(columns=prime_columns + prices_columns + ["PM", "MO"]),
+                    height=150,
                 )
+                st.markdown("Ordering prices and providing the last result:")
+                df_dropped = df.drop(
+                    columns=["MO", "PM", "PR"] + prime_columns + prices_columns
+                )
+                processed_column_names = [
+                    format_column(column) for column in df_dropped.columns
+                ]
+                df_dropped.columns = processed_column_names
+                transposed_df = df_dropped.set_index("Articles").T
+                transposed_df = order_items(transposed_df)
+                st.dataframe(transposed_df, height=150)
+                transposed_df.to_excel('output.xlsx', index=False, sheet_name="Sheet")
+                with open('output.xlsx', 'rb') as file:
+                    contents = file.read()
+                st.download_button("Download as Excel", data=contents, file_name='output.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
             except Exception as e:
                 st.error("Error reading the file: " + str(e))
 
