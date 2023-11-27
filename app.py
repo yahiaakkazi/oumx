@@ -66,10 +66,15 @@ def main():
                 transposed_df = df_dropped.set_index("Articles").T
                 transposed_df = order_items(transposed_df)
                 st.dataframe(transposed_df, height=150)
-                transposed_df.to_excel('output.xlsx', index=False, sheet_name="Sheet")
-                with open('output.xlsx', 'rb') as file:
+                transposed_df.to_excel("output.xlsx", index=False, sheet_name="Sheet")
+                with open("output.xlsx", "rb") as file:
                     contents = file.read()
-                st.download_button("Download as Excel", data=contents, file_name='output.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                st.download_button(
+                    "Download as Excel",
+                    data=contents,
+                    file_name="output.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
 
             except Exception as e:
                 st.error("Error reading the file: " + str(e))
